@@ -1,18 +1,18 @@
 'use client';
+
 import TicketCard from './TicketCard';
 
-
-export default function TicketList({ tickets, onAddToQueue, isQueued }) {
-return (
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-{tickets.map((t) => (
-<TicketCard
-key={t.id}
-ticket={t}
-onAdd={() => onAddToQueue(t.id)}
-isQueued={isQueued(t.id)}
-/>
-))}
-</div>
-);
+export default function TicketList({ tickets, queue, onAddToQueue }) {
+  return (
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {tickets.map(t => (
+        <TicketCard
+          key={t.id}
+          ticket={t}
+          inQueue={!!queue[t.id]}
+          onAdd={() => onAddToQueue(t.id)}
+        />
+      ))}
+    </div>
+  );
 }
