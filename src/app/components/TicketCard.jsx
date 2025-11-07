@@ -1,53 +1,32 @@
 'use client';
 
+export default function TicketCard({ ticket, inQueue, onAdd }) {
+  const { title, description, priority, status, assignee, updatedAt } = ticket;
+  const updated = new Date(updatedAt).toLocaleString();
 
-function Badge({ children }) {
-return (
-<span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs border">
-{children}
-</span>
-);
-}
+  return (
+    <div className="rounded-xl border border-slate-700 bg-neutral-900 text-slate-100 p-4 shadow">
+      <div className="text-xs text-slate-400 mb-1">Priority: <span className="font-semibold">{priority}</span></div>
+      <div className="text-xs text-slate-400 mb-2">Status: <span className="font-semibold">{status}</span></div>
+      <h3 className="font-semibold">{title}</h3>
+      <p className="text-sm text-slate-300 mt-1">{description}</p>
+      <div className="mt-3 text-xs text-slate-400">
+        Assignee: <span className="font-medium">{assignee}</span>
+      </div>
+      <div className="text-xs text-slate-500">Updated: {updated}</div>
 
-
-export default function TicketCard({ ticket, onAdd, isQueued }) {
-const { id, title, description, priority, status, assignee, updatedAt } = ticket;
-const date = new Date(updatedAt);
-
-
-return (
-<article className="rounded-2xl border p-4 shadow-sm bg-white">
-<div className="flex items-start justify-between mb-2">
-<h3 className="font-semibold text-lg leading-snug">
-{title}
-</h3>
-<Badge>{id}</Badge>
-</div>
-<p className="text-sm text-gray-600 mb-3">{description}</p>
-
-
-<div className="flex flex-wrap gap-2 mb-3">
-<Badge>Priority: {priority}</Badge>
-<Badge>Status: {status}</Badge>
-<Badge>Assignee: {assignee}</Badge>
-</div>
-
-
-<p className="text-xs text-gray-500 mb-3">Updated {date.toLocaleString()}</p>
-
-
-<div className="flex items-center gap-3">
-<button
-className="px-3 py-2 rounded-lg border disabled:opacity-50"
-onClick={onAdd}
-disabled={isQueued}
->
-{isQueued ? 'In My Queue' : 'Add to My Queue'}
-</button>
-{isQueued && (
-<span className="text-xs text-gray-500">Already queued</span>
-)}
-</div>
-</article>
-);
+      <button
+        className="mt-3 w-full rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold hover:bg-blue-500 disabled:opacity-40"
+        onClick={onAdd}
+        disabled={inQueue}
+      >
+        {inQueue ? 'Already in My Queue' : 'Add to My Queue'}
+      </button>
+      {inQueue && (
+        <p className="mt-1 text-[11px] text-slate-400">
+          This ticket is in your queue.
+        </p>
+      )}
+    </div>
+  );
 }
